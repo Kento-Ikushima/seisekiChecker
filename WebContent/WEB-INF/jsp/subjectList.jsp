@@ -31,5 +31,6 @@
             <% } %>
         </tbody>
     </table>
+    <a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>

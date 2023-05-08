@@ -8,9 +8,10 @@
 <title>成績チェッカー</title>
 </head>
 <body>
-<p>ようこそ<%= request.getSession().getAttribute("teacherId") %>さん</p>
+<p>ようこそ<%= request.getSession().getAttribute("teacherId") %>さん(ホーム画面)</p>
 <a href="/seisekiChecker/WelcomeServlet">トップへ</a>
 <a href="/seisekiChecker/AddSubjectServlet">科目作成</a>
 <a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
+<a href="/seisekiChecker/DeleteSubjectsServlet">科目削除</a>
 </body>
 </html>
