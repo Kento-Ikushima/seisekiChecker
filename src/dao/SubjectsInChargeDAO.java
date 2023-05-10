@@ -98,4 +98,38 @@ public class SubjectsInChargeDAO {
     }
 
 
+//一括削除
+    public boolean deleteSubjects(List<Subject> subjectIdList) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+
+            // Course Student Tableから該当するデータを削除する
+            String sql = "DELETE FROM course_student WHERE subject_id = ?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            for (Subject subjectId : subjectIdList) {
+                pStmt.setString(1, subjectId.getSubjectId());
+                pStmt.executeUpdate();
+            }
+
+            // Subjects in charge Tableから該当するデータを削除する
+            sql = "DELETE FROM subjects_in_charge WHERE subject_id = ?";
+            pStmt = conn.prepareStatement(sql);
+            for (Subject subjectId : subjectIdList) {
+                pStmt.setString(1, subjectId.getSubjectId());
+                pStmt.executeUpdate();
+            }
+
+            // Subject Tableから該当するデータを削除する
+            sql = "DELETE FROM subject WHERE subject_id = ?";
+            pStmt = conn.prepareStatement(sql);
+            for (Subject subjectId : subjectIdList) {
+                pStmt.setString(1, subjectId.getSubjectId());
+                pStmt.executeUpdate();
+            }
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

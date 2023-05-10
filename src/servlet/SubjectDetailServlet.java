@@ -50,4 +50,3 @@ public class SubjectDetailServlet extends HttpServlet {
         doGet(request, response);
     }
 }
-
