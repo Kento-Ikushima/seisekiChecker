@@ -1,4 +1,3 @@
-//pinyo---n
 package dao;
 
 import java.sql.Connection;
@@ -12,12 +11,12 @@ import java.util.List;
 import model.Student;
 
 
-//科目IDに対して、生徒IDとNameを取得
 public class CourseStudentDAO {
     private static final String JDBC_URL = "jdbc:h2:tcp://localhost/~/seisekiChecker";
     private static final String DB_USER = "sa";
     private static final String DB_PASS = "";
 
+  //科目IDに対して、生徒IDとNameを取得
     public List<Student> findStudentsBySubjectId(String subjectId) {
         List<Student> studentList = new ArrayList<>();
 
@@ -46,4 +45,42 @@ public class CourseStudentDAO {
 
         return studentList;
     }
+
+
+    //受講生徒の削除
+    public void deleteCourseStudent(String subjectId, String[] studentsToDeleteArray) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "DELETE FROM course_student WHERE student_id = ? AND subject_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            for (String studentId : studentsToDeleteArray) {
+            	stmt.setString(1, studentId);
+            	stmt.setString(2, subjectId);
+            	stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //受講生徒の追加
+    public void addCourseStudent(String subjectId, String[] allStudentIds) {
+    	System.out.println("test");
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "INSERT INTO course_student (student_id, subject_id) VALUES (?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            for (String studentId : allStudentIds) {
+            	stmt.setString(1, studentId);
+            	stmt.setString(2, subjectId);
+            	stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 }
