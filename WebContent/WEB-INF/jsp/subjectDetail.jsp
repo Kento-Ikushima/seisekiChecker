@@ -41,6 +41,7 @@
 		%>
 	</p>
 	<hr>
+	<a href="EditStudentServlet?subjectId=<%= subject.getSubjectId() %>">生徒登録</a>
 	<a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
 </body>
 </html>
