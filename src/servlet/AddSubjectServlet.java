@@ -1,4 +1,3 @@
-//tamasi
 package servlet;
 
 
