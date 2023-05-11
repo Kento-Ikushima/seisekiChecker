@@ -71,4 +71,20 @@ public class TestDAO {
         }
         return testList;
     }
+  //選択したtestIDに対応するレコードを一括で削除
+    public boolean deleteTests(int[] deleteTests) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+
+            String sql = "DELETE FROM test WHERE test_id = ?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            for (int testId : deleteTests) {
+                pStmt.setInt(1, testId);
+                pStmt.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

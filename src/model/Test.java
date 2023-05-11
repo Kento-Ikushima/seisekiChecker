@@ -1,7 +1,7 @@
 package model;
 
 public class Test {
-	private String testId;
+	private int testId;
 	private String testName;
 	private String subjectId;
 	private int criterionId;
@@ -16,14 +16,14 @@ public class Test {
 		this.multiplier = multiplier;
 	}
 
-	public String getTestId() {return testId;}
+	public int getTestId() {return testId;}
 	public String getTestName() {return testName;}
 	public String getSubjectId() {return subjectId;}
 	public int getCriterionId() {return criterionId;}
 	public int getFullScore() {return fullScore;}
 	public double getMultiplier() {return multiplier;}
 
-    public void setTestId(String testId) {
+    public void setTestId(int testId) {
         this.testId = testId;
     }
     public void setTestName(String testName) {
