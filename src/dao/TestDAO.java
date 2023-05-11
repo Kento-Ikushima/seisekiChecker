@@ -41,6 +41,7 @@ public class TestDAO {
 
 
   //テストに担当科目管理をleft join。teacherIdが一致するレコードを取る
+  //つまり、teacherIDに紐づくテストを探す
     public List<Test> findTestsByTeacherId(String teacherId) throws SQLException {
         List<Test> testList = new ArrayList<>();
 
@@ -63,6 +64,33 @@ public class TestDAO {
 
                 Test test = new Test(testName, subjectId, criterionId, fullScore, multiplier);
 
+                testList.add(test);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return testList;
+    }
+
+  //subjectIDに紐づくテスト取得（科目詳細画面用）
+    public List<Test> findTestsBySubjectId(String subjectId) throws SQLException {
+        List<Test> testList = new ArrayList<>();
+
+        try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "SELECT * FROM test WHERE subject_id = ?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, subjectId);
+
+            ResultSet rs = pStmt.executeQuery();
+
+            while(rs.next()) {
+                String testName = rs.getString("test_name");
+                int criterionId = rs.getInt("criterion_id");
+                int fullScore = rs.getInt("full_score");
+                double multiplier = rs.getDouble("multiplier");
+
+                Test test = new Test(testName, subjectId, criterionId, fullScore, multiplier);
                 testList.add(test);
             }
         } catch (SQLException e) {

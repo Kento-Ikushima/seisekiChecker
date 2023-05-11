@@ -41,7 +41,7 @@ public class ListOfTestsServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-        //科目IDに対応する科目情報を取得(subjectIdをどうやって召喚するか不明 chatGPT参照）
+        //科目IDに対応する科目情報を取得
         SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjectList = new ArrayList<>();
 		for (Test test : testList) {
@@ -51,7 +51,7 @@ public class ListOfTestsServlet extends HttpServlet {
         }
 
 
-        //観点iDに対応する観点名を取得
+        //観点IDに対応する観点名を取得
         CriterionDAO criterionDAO = new CriterionDAO();
         List<Criterion> criterionList = criterionDAO.findAllCriterions();
 

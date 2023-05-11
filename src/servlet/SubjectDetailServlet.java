@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,11 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.CourseStudentDAO;
+import dao.CriterionDAO;
 import dao.SubjectDAO;
 import dao.SubjectsInChargeDAO;
+import dao.TestDAO;
+import model.Criterion;
 import model.Student;
 import model.Subject;
 import model.Teacher;
+import model.Test;
 
 @WebServlet("/SubjectDetailServlet")
 public class SubjectDetailServlet extends HttpServlet {
@@ -36,11 +41,26 @@ public class SubjectDetailServlet extends HttpServlet {
         CourseStudentDAO courseStudentDAO = new CourseStudentDAO();
         List<Student> studentList = courseStudentDAO.findStudentsBySubjectId(subjectId);
 
+        //科目IDに紐づくテスト情報を取得
+        TestDAO testDAO = new TestDAO();
+        List<Test> testList = null;
+        try {
+			testList = testDAO.findTestsBySubjectId(subjectId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+        //観点IDに対応する観点名を取得
+        CriterionDAO criterionDAO = new CriterionDAO();
+        List<Criterion> criterionList = criterionDAO.findAllCriterions();
+
+
         // JSPに渡すデータを設定
         request.setAttribute("subject", subject);
         request.setAttribute("teacherList", teacherList);
         request.setAttribute("studentList", studentList);
-
+        request.setAttribute("testList", testList);
+        request.setAttribute("criterionList", criterionList);
         // 詳細画面を表示
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/subjectDetail.jsp");
         dispatcher.forward(request, response);
