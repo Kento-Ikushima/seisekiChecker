@@ -48,6 +48,7 @@
 			}
 		%>
 	</p>
+  <a href="EditStudentServlet?subjectId=<%= subject.getSubjectId() %>">生徒登録</a>
 	<hr>
 	<h2>テスト一覧</h2>
     <table border="1">
