@@ -13,5 +13,7 @@
 <a href="/seisekiChecker/AddSubjectServlet">科目作成</a>
 <a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
 <a href="/seisekiChecker/DeleteSubjectsServlet">科目削除</a>
+<a href="/seisekiChecker/AddTestServlet">テスト入力</a>
+<a href="/seisekiChecker/ListOfTestsServlet">テスト一覧</a>
 </body>
 </html>
