@@ -5,18 +5,20 @@ import java.util.List;
 
 import dao.TestDAO;
 import model.Test;
+import model.TestLackingId;
 
 public class TestDAOTest {
 	public static void main(String[] args) throws SQLException {
 		testAddTest();//testを作成
 		testFindTestsByTeacherId();
+		testDeleteTests();
 	}
 
 //test作成テスト
 	public static void testAddTest() {
-		Test test = new Test("小テスト", "55444", 1, 10, 3);
+		TestLackingId testLackingId = new TestLackingId("小テスト", "55444", 1, 10, 3);
 		TestDAO dao = new TestDAO();
-		int result = dao.addTest(test);
+		int result = dao.addTest(testLackingId);
 
 		if(result == 1) {
 			System.out.println("testAddTest:成功したぜ");
@@ -38,4 +40,13 @@ public class TestDAOTest {
 			System.out.println("testFindTestsByTeacherId:成功したぜ");
 		}
 	}
+
+//testIDに対応するテストを一括で削除するテスト
+	public static void testDeleteTests() {
+	int[] deleteTests = {35, 36};
+	TestDAO dao = new TestDAO();
+	boolean result = dao.deleteTests(deleteTests);
+	System.out.println(result);
+	}
+
 }
