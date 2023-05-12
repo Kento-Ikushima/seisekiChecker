@@ -62,10 +62,8 @@ public class EditStudentServlet extends HttpServlet {
 	            studentsToDelete.add(studentId);
 	        }
 	    }
-	    System.out.println(studentsToDelete);
 	    if (!studentsToDelete.isEmpty()) {
 	    	String[] studentsToDeleteArray = studentsToDelete.toArray(new String[0]);
-	    	System.out.println(studentsToDeleteArray);
 	        courseStudentDAO.deleteCourseStudent(subjectId, studentsToDeleteArray);
 	    }
 

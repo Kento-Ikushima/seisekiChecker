@@ -1,6 +1,6 @@
 package model;
 
-public class Test {
+public class TestLackingId {
 	private int testId;
 	private String testName;
 	private String subjectId;
@@ -8,8 +8,7 @@ public class Test {
 	private int fullScore;
 	private double multiplier;
 
-	public Test(int testId,String testName, String subjectId, int criterionId, int fullScore, double multiplier) {
-		this.testId = testId;
+	public TestLackingId(String testName, String subjectId, int criterionId, int fullScore, double multiplier) {
 		this.testName = testName;
 		this.subjectId = subjectId;
 		this.criterionId = criterionId;

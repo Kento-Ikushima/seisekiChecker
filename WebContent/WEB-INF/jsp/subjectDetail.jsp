@@ -48,7 +48,7 @@
 			}
 		%>
 	</p>
-  <a href="EditStudentServlet?subjectId=<%= subject.getSubjectId() %>">生徒登録</a>
+	<a href="EditStudentServlet?subjectId=<%= subject.getSubjectId() %>">生徒登録</a>
 	<hr>
 	<h2>テスト一覧</h2>
     <table border="1">
@@ -72,6 +72,7 @@
         </tbody>
     </table>
     <hr>
+	<a href="/seisekiChecker/DeleteTestsServlet?subjectId=<%= subject.getSubjectId() %>">テスト削除</a>
 	<a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
 </body>
 </html>

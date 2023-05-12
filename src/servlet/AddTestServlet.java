@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import dao.SubjectsInChargeDAO;
 import dao.TestDAO;
 import model.Subject;
-import model.Test;
+import model.TestLackingId;
 
 
 @WebServlet("/AddTestServlet")
@@ -54,6 +54,7 @@ public class AddTestServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setCharacterEncoding("UTF-8");
+
 		String testName = request.getParameter("testName");
 		String subjectId = request.getParameter("subjectId");
 		String criterionIdString = request.getParameter("criterionId");
@@ -67,8 +68,8 @@ public class AddTestServlet extends HttpServlet {
 			int fullScore = Integer.parseInt(fullScoreString);
 			double multiplier = Double.parseDouble(multiplierString);
 
-			Test test = new Test(testName, subjectId, criterionId, fullScore, multiplier);
-			testDao.addTest(test);
+			TestLackingId testLackingId = new TestLackingId(testName, subjectId, criterionId, fullScore, multiplier);
+			testDao.addTest(testLackingId);
 
 			//ここからもう一つのサーブレットに飛ぶ
 			String teacherId = (String) request.getSession().getAttribute("teacherId");
