@@ -63,7 +63,7 @@
         <tbody>
             <% for (Test test : testList) { %>
                 <tr>
-                    <td><%= test.getTestName() %></td>
+                    <td><a href="AddTestResultServlet?testId=<%= test.getTestId() %>"><%= test.getTestName() %></a></td>
                     <td><%= criterionList.get(test.getCriterionId() - 1).getCriterionName() %></td>
                     <td><%= test.getFullScore() %></td>
                     <td><%= test.getMultiplier() %></td>

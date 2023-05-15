@@ -119,4 +119,29 @@ public class TestDAO {
             return false;
         }
     }
+
+ // （１件取得）teacherIDに対するテスト情報
+    public Test findTestById(int testId) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "SELECT * FROM TEST WHERE TEST_ID = ?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, testId);
+
+            ResultSet rs = pStmt.executeQuery();
+
+            if (rs.next()) {
+                String testName = rs.getString("test_name");
+                String subjectId = rs.getString("subject_id");
+                int criterionId = rs.getInt("criterion_id");
+                int fullScore = rs.getInt("full_score");
+                double multiplier = rs.getDouble("multiplier");
+
+
+                return new Test(testId, testName, subjectId, criterionId, fullScore, multiplier);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
