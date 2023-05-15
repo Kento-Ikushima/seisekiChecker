@@ -42,7 +42,7 @@
 					Criterion criterion = criterionList.get(test.getCriterionId() - 1);
 			%>
 					<tr>
-						<td><%= test.getTestName() %></td>
+						<td><a href="AddTestResultServlet?testId=<%= test.getTestId() %>"><%= test.getTestName() %></a></td>
 						<td><%= subject.getSubjectName() %></td>
 						<td><%= criterion.getCriterionName() %></td>
 						<td><%= test.getFullScore() %></td>
@@ -53,5 +53,6 @@
 			%>
 		</tbody>
 	</table>
+	<a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>

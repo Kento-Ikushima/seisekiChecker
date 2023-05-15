@@ -48,12 +48,6 @@ public class AddTestServlet extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Class.forName("org.h2.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		request.setCharacterEncoding("UTF-8");
 
 		String testName = request.getParameter("testName");
 		String subjectId = request.getParameter("subjectId");
