@@ -28,6 +28,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>科目詳細</title>
+	    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
 	<h1>科目詳細</h1>
@@ -63,7 +69,7 @@
         <tbody>
             <% for (Test test : testList) { %>
                 <tr>
-                    <td><a href="AddTestResultServlet?testId=<%= test.getTestId() %>"><%= test.getTestName() %></a></td>
+                    <td><a href="AddTestResultServlet?testId=<%= test.getTestId() %>&subjectId=<%= subject.getSubjectId() %>"><%= test.getTestName() %></a></td>
                     <td><%= criterionList.get(test.getCriterionId() - 1).getCriterionName() %></td>
                     <td><%= test.getFullScore() %></td>
                     <td><%= test.getMultiplier() %></td>
@@ -75,5 +81,7 @@
 	<a href="/seisekiChecker/DeleteTestsServlet?subjectId=<%= subject.getSubjectId() %>">テスト削除</a>
 	<a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
 	<a href="/seisekiChecker/AllListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>">テスト結果一覧</a>
+	<br>
+    <a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>

@@ -25,6 +25,7 @@ public class AddTestServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		HttpSession session = request.getSession();
     	String teacherId = (String) session.getAttribute("teacherId");
+    	String subjectId = request.getParameter("subjectId");
 
         // teacherIdから科目一覧を取得する
     	SubjectsInChargeDAO subjectsInChargeDAO = new SubjectsInChargeDAO();
@@ -40,6 +41,7 @@ public class AddTestServlet extends HttpServlet {
 
         // リクエストスコープに選択肢を設定する
         request.setAttribute("subjectOptions", subjectOptions.toString());
+        request.setAttribute("subjectId", subjectId);
 
         // フォワード
      	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/addTest.jsp");

@@ -12,6 +12,12 @@
 <head>
     <meta charset="UTF-8">
     <title>生徒編集画面</title>
+        <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
     <h1>生徒を編集してください</h1>

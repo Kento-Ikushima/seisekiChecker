@@ -41,30 +41,38 @@ public class EditStudentServlet extends HttpServlet {
 	    dispatcher.forward(request, response);
 	}
 
+
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    String subjectId = request.getParameter("subjectId");
 	    String[] selectedStudentIds = request.getParameterValues("selectedStudentIds");
 	    String[] allStudentIds = request.getParameterValues("allStudentIds");
 
-
 	//まず受講生の削除。selectedリストとdeleteCouiseメソッドを使い、チェックがついているものを検索かけて、チェックが外れたものをあぶりだして削除
 	    CourseStudentDAO courseStudentDAO = new CourseStudentDAO();
 	    List<Student> nowSelectedStudentList = courseStudentDAO.findStudentsBySubjectId(subjectId); //変更前の情報
 	    List<String> nowSelectedStudentIdList = new ArrayList<>();
-	    for (Student student : nowSelectedStudentList) {
-	    	nowSelectedStudentIdList.add(student.getStudentId());
-	    }
-	    List<String> selectedStudentIdList = Arrays.asList(selectedStudentIds); //selectedをListに変換
-	    List<String> studentsToDelete = new ArrayList<>();
 
-	    for (String studentId : nowSelectedStudentIdList) {
-	        if (!selectedStudentIdList.contains(studentId)) {
-	            studentsToDelete.add(studentId);
-	        }
-	    }
-	    if (!studentsToDelete.isEmpty()) {
-	    	String[] studentsToDeleteArray = studentsToDelete.toArray(new String[0]);
-	        courseStudentDAO.deleteCourseStudent(subjectId, studentsToDeleteArray);
+	    if(nowSelectedStudentList != null && !nowSelectedStudentList.isEmpty()) {     //そもそも受講生0人なら飛ばす
+		    for (Student student : nowSelectedStudentList) {
+		    	nowSelectedStudentIdList.add(student.getStudentId());
+		    }
+		    List<String> studentsToDelete = new ArrayList<>();
+
+		    if(selectedStudentIds == null || selectedStudentIds.length == 0) {   //全員のチェックが外れていたら、newselectedをそのままstudentsToDeleteに
+		    	studentsToDelete.addAll(nowSelectedStudentIdList);
+		    } else {
+		    	List<String> selectedStudentIdList = Arrays.asList(selectedStudentIds); //selectedをListに変換
+		    	for (String studentId : nowSelectedStudentIdList) {
+			        if (!selectedStudentIdList.contains(studentId)) {
+			            studentsToDelete.add(studentId);
+			        }
+			    }
+		    }
+			if (!studentsToDelete.isEmpty()) {  //削除対象がいれば、処理を行う
+				String[] studentsToDeleteArray = studentsToDelete.toArray(new String[0]);
+			    courseStudentDAO.deleteCourseStudent(subjectId, studentsToDeleteArray);
+			}
 	    }
 
 	//次に未受講生の追加。allリストをaddCourseメソッドを使い、チェックついてるものをそのまま追加

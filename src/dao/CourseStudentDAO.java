@@ -66,7 +66,6 @@ public class CourseStudentDAO {
 
     //受講生徒の追加
     public void addCourseStudent(String subjectId, String[] allStudentIds) {
-    	System.out.println("test");
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
             String sql = "INSERT INTO course_student (student_id, subject_id) VALUES (?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);

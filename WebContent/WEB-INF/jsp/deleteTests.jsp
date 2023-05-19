@@ -20,6 +20,12 @@
 <head>
 <meta charset="UTF-8">
 <title>科目IDに紐づくテスト削除画面</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
     <h1>削除対象のテストを選択してください</h1>

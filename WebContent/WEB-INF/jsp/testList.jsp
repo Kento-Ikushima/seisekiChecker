@@ -20,6 +20,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>テスト一覧画面</title>
+	    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
 	<h1>テスト一覧</h1>

@@ -55,6 +55,12 @@
 <head>
 <meta charset="UTF-8">
 <title>All Test Results</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
     <h1>成績、テスト結果一覧</h1>
@@ -105,5 +111,7 @@
 			<td></td>
         </tr>
     </table>
+    <br>
+    <a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>

@@ -12,6 +12,12 @@
 <head>
 <meta charset="UTF-8">
 <title>削除対象の科目を選択してください</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
     <h1>削除対象の科目を選択してください</h1>
