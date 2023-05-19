@@ -74,5 +74,6 @@
     <hr>
 	<a href="/seisekiChecker/DeleteTestsServlet?subjectId=<%= subject.getSubjectId() %>">テスト削除</a>
 	<a href="/seisekiChecker/ListOfSubjectsServlet">科目一覧</a>
+	<a href="/seisekiChecker/AllListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>">テスト結果一覧</a>
 </body>
 </html>
