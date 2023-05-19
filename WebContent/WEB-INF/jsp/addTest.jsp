@@ -11,6 +11,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>テスト作成画面</title>
+	    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
 	<h1>テストを入力してください</h1>

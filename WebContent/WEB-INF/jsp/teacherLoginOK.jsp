@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>成績チェッカー</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
 <p>ようこそ<%= request.getSession().getAttribute("teacherId") %>さん(ホーム画面)</p>

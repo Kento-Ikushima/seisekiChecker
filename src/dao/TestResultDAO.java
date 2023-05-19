@@ -309,13 +309,11 @@ public class TestResultDAO {
             pStmt = conn.prepareStatement(sql);
             pStmt.setString(1, subjectId);
             ResultSet rs = pStmt.executeQuery();
-            System.out.println("aiueo");
             while(rs.next()) {
                 String studentId = rs.getString("student_id");
                 int finalResult = rs.getInt("final_result");
 
                 FinalResult finalResults = new FinalResult(subjectId,studentId, finalResult);
-                System.out.println(finalResults);
                 finalResultList.add(finalResults);
             }
         } catch (SQLException e) {

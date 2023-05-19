@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>成績チェッカー</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
 <form action="/seisekiChecker/TeacherRegServlet" method="post">

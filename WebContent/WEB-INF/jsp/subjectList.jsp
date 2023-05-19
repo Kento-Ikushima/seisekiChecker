@@ -12,6 +12,12 @@
 <head>
 <meta charset="UTF-8">
 <title>科目一覧</title>
+    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+    </style>
 </head>
 <body>
     <h1>科目一覧</h1>

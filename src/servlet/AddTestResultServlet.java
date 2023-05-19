@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class AddTestResultServlet extends HttpServlet {
 	    //jspからリクエストパラメータ取得
 	    String testResultIdString = request.getParameter("testResultId");
 	    String testIdString = request.getParameter("testId");
+	    String subjectId = request.getParameter("subjectId");
 
 	    //testResultIdとtestIdのnullチェックする
 	    if(testResultIdString != null && testIdString != null) {
@@ -83,11 +85,11 @@ public class AddTestResultServlet extends HttpServlet {
 	                TestResult testResult = new TestResult(testResultId, testId, studentId, score);
 	                testResultDAO.addTestResult(testResult);
 	            }
-
-	       //成績表示サーブレットにリダイレクト(subjectIdは予想でいれとく）
-//				String teacherId = (String) request.getSession().getAttribute("teacherId");
-//				response.sendRedirect("/seisekiChecker/-----Servlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
 	        }
+	       //成績表示サーブレットにリダイレクト(subjectIdは予想でいれとく）
+	           // <a href="/seisekiChecker/AllListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>">テスト結果一覧</a>
+				response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
+
 
 	    } else {
 	        response.sendRedirect("/WEB-INF/jsp/addTestResult.jsp");

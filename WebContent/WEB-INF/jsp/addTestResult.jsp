@@ -24,6 +24,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>テスト結果入力画面</title>
+	    <style>
+        body {
+            background-color: #edefea;
+            color: #323232;
+        }
+	    </style>
 </head>
 <body>
 	<h1>テストの結果を入力してください</h1>
@@ -51,7 +57,7 @@
 	<hr>
 
 
-	<form action="/seisekiChecker/AddTestResultServlet" method="post">
+	<form action="/seisekiChecker/AddTestResultServlet?subjectId=<%= subject.getSubjectId() %>" method="post">
 		<table border="1">
   		<tr>
     		<th>受講生徒</th>
