@@ -28,12 +28,13 @@ public class TestResultDAO {
 
     	//test_result_idは自動生成されるので送らない
     	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "INSERT INTO test_result (test_id, student_id, score) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO test_result (test_id, student_id, score, test_round) VALUES (?, ?, ?, ?)";
             PreparedStatement pStmt = conn.prepareStatement(sql);
 
             pStmt.setInt(1, testResult.getTestId());
             pStmt.setString(2, testResult.getStudentId());
             pStmt.setInt(3, testResult.getScore());
+            pStmt.setInt(4, testResult.getTestRound());
 
             result = pStmt.executeUpdate();
 
@@ -44,7 +45,35 @@ public class TestResultDAO {
         return result;
     }
 
-//×【情報取得】科目IDに対応するテスト結果情報（これだと、いつの小テスト①か分からず、思った表にならない）
+//テストIDが何回目の使用かをカウント
+    public int determineTestRoundForNewResults(int testId) {
+    	int dbMaxTestRound = 0;
+System.out.println("テストをカウントしようとはしている");
+    	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+    		String sql = "SELECT MAX(test_round) FROM test_result WHERE test_id = ?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+
+            pStmt.setInt(1, testId);
+            ResultSet rs = pStmt.executeQuery();
+            if (rs.next()) {
+                dbMaxTestRound = rs.getInt(1);
+            }
+    	} catch (SQLException e) {
+            e.printStackTrace();
+            return dbMaxTestRound = 0;
+        }
+
+    	System.out.println("テストをカウント終わろうとはしている");
+    	int nextTestRound;
+    	if (dbMaxTestRound == 0) {
+            nextTestRound = 1;
+        } else {
+            nextTestRound = dbMaxTestRound + 1;
+        }
+    	return nextTestRound;
+    }
+
+//★【情報取得】科目IDに対応するテスト結果情報
     public List<TestResultAndTest> findTestResultBySubjectId(String subjectId) {
     	List<TestResultAndTest> testResultList = new ArrayList<>();
 
@@ -62,13 +91,14 @@ public class TestResultDAO {
             	int testResultId = rs.getInt("test_result_id");
             	int testId = rs.getInt("test.test_id");
             	String studentId = rs.getString("student_id");
-            	int score= rs.getInt("score");
+            	int score = rs.getInt("score");
+            	int testRound = rs.getInt("test_round");
                 String testName = rs.getString("test_name");
                 int criterionId = rs.getInt("criterion_id");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
 
-                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testName, subjectId, criterionId, fullScore, multiplier);
+                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier);
 
                 testResultList.add(testResultAndTest);
             }

@@ -64,33 +64,51 @@ public class AddTestResultServlet extends HttpServlet {
 	    String testIdString = request.getParameter("testId");
 	    String subjectId = request.getParameter("subjectId");
 
+		//スコアが入力されているかチェックする
+		boolean hasScores = false;
+		Map<String, String[]> parameterMap = request.getParameterMap();
+		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+			String parameterName = entry.getKey();
+			if (parameterName.startsWith("score-")) {
+				String[] parameterValues = entry.getValue();
+				if (parameterValues != null && parameterValues.length > 0 && !parameterValues[0].isEmpty()) {
+					hasScores = true;
+					break;
+				}
+			}
+		}
+
 	    //testResultIdとtestIdのnullチェックする
 	    if(testResultIdString != null && testIdString != null) {
 	        int testResultId = Integer.parseInt(testResultIdString);
 	        int testId = Integer.parseInt(testIdString);
-
-	        //生徒のidと成績を取得する
-	        Map<String, String[]> parameterMap = request.getParameterMap();
 	        TestResultDAO testResultDAO = new TestResultDAO();
 
-	        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-	            String parameterName = entry.getKey();
+	        //スコアが入力されている場合のみTestRoundを更新して取得する
+	        if (hasScores) {
+	        	int testRound = testResultDAO.determineTestRoundForNewResults(testId);
+	        	//生徒のidと成績を取得する
+	        	for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+	        		String parameterName = entry.getKey();
+	            	//score-で始まるパラメータを成績として扱う
+	            	if (parameterName.startsWith("score-")) {
+	            		String studentId = parameterName.substring(6);
+	            		String[] parameterValues = entry.getValue();
+	            		//ここで空白行をはじいている
+	            		if (parameterValues != null && parameterValues.length > 0 && !parameterValues[0].isEmpty()) {
+	            			int score = Integer.parseInt(parameterValues[0]);
 
-	            //score-で始まるパラメータを成績として扱う
-	            if (parameterName.startsWith("score-")) {
-	                String studentId = parameterName.substring(6);
-	                int score = Integer.parseInt(entry.getValue()[0]);
-
-	                //TestResultオブジェクトを作成してデータベースに保存する
-	                TestResult testResult = new TestResult(testResultId, testId, studentId, score);
-	                testResultDAO.addTestResult(testResult);
-	            }
+	            			//TestResultオブジェクトを作成してデータベースに保存する
+	            			TestResult testResult = new TestResult(testResultId, testId, studentId, score,testRound);
+	            			testResultDAO.addTestResult(testResult);
+	            		}
+	            	}
+	        	}
+	        }else {
+	        	response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
 	        }
-	       //成績表示サーブレットにリダイレクト(subjectIdは予想でいれとく）
-	           // <a href="/seisekiChecker/AllListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>">テスト結果一覧</a>
-				response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
-
-
+	       //成績表示サーブレットにリダイレクト
+			response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
 	    } else {
 	        response.sendRedirect("/WEB-INF/jsp/addTestResult.jsp");
 	    }

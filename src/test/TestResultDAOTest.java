@@ -12,7 +12,7 @@ public class TestResultDAOTest {
 
 //test作成テスト
 	public static void testAddTestResult() {
-		TestResult testResult = new TestResult(0, 66, "000000003", 4);
+		TestResult testResult = new TestResult(0, 70, "000000003", 4, 1);
 		TestResultDAO dao = new TestResultDAO();
 		int result = dao.addTestResult(testResult);
 

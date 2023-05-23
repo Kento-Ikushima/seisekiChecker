@@ -25,6 +25,7 @@ import model.FinalResult;
 import model.Student;
 import model.Subject;
 import model.Test;
+import model.TestResultAndTest;
 
 //全観点の情報ありの成績一覧
 @WebServlet("/AllListOfTestResultsServlet")
@@ -60,10 +61,12 @@ public class ListOfTestResultsServlet extends HttpServlet {
 
 
         //★以下新情報
-        //××テストIDと紐づく科目IDで、限定したテスト結果情報の取得
+        //テストIDと紐づく科目IDで、限定したテスト結果情報の取得
         TestResultDAO testResultDAO = new TestResultDAO();
+        List<TestResultAndTest> testResultList = testResultDAO.findTestResultBySubjectId(subjectId);
+		request.setAttribute("testResultList", testResultList);
 
-		//観点n評点の取得
+        //観点n評点の取得
         List<CriterionNScore> criterionNScoreList = testResultDAO.calculateCriterionNScore(subjectId);
 
         //観点n評点の平均の取得(3件)
@@ -115,7 +118,6 @@ public class ListOfTestResultsServlet extends HttpServlet {
         request.setAttribute("studentList", studentList);
         request.setAttribute("subject", subject);
         request.setAttribute("criterionList", criterionList);
- //       request.setAttribute("testResultList", testResultList);
         request.setAttribute("criterionNScoreList", criterionNScoreList);
         request.setAttribute("averageCriterionNScoreList", averageCriterionNScoreList);
         request.setAttribute("evaluationList", evaluationList);
