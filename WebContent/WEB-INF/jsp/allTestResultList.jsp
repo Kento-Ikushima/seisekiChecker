@@ -13,6 +13,7 @@
 <%@ page import="model.Evaluation" %>
 <%@ page import="model.CriterionNEvaluation" %>
 <%@ page import="model.FinalResult" %>
+<%@ page import="model.TestResultAndTest" %>
 <%
     List<Evaluation> evaluationList = (List<Evaluation>)request.getAttribute("evaluationList");
 %>
@@ -32,7 +33,7 @@
     List<Criterion> criterionList = (List<Criterion>)request.getAttribute("criterionList");
 %>
 <%
-    List<TestResult> testResultList = (List<TestResult>)request.getAttribute("testResultList");
+    List<TestResultAndTest> testResultList = (List<TestResultAndTest>)request.getAttribute("testResultList");
 %>
 <%
     List<AverageCriterionNScore> averageCriterionNScoreList = (List<AverageCriterionNScore>)request.getAttribute("averageCriterionNScoreList");
@@ -65,7 +66,7 @@
 <body>
     <h1>成績、テスト結果一覧</h1>
 	<h2>成績情報</h2>
-    <table border = "1">
+    <table border="1" style="border-collapse: collapse">
         <tr>
             <th>生徒名</th>
             <th>評定</th>
@@ -78,27 +79,34 @@
             <th>観点３評価</th>
         </tr>
         <% for (Evaluation evaluation : evaluationList) { %>
-            <tr>
-                <td><%= evaluation.getStudentId() %></td>
-                <% for (FinalResult finalResult : finalResultList) { %>
-                    <% if (finalResult.getStudentId().equals(evaluation.getStudentId())) { %>
-                		<td><%= finalResult.getFinalResult() %></td>
-                    <% } %>
+        <tr>
+            <% for (Student student : studentList) { %>
+                <% if (student.getStudentId().equals(evaluation.getStudentId())) { %>
+                	<td><%= student.getStudentName() %></td>
                 <% } %>
-                <td><%= evaluation.getEvaluation() %></td>
-                <% for (CriterionNScore criterionNScore : criterionNScoreList) { %>
-                    <% if (criterionNScore.getStudentId().equals(evaluation.getStudentId())) { %>
-                        <td><%= criterionNScore.getCriterionNScore() %></td>
-                    <% } %>
-                <% } %>
-                <% for (CriterionNEvaluation criterionNEvaluation : criterionNEvaluationList) { %>
-                    <% if (criterionNEvaluation.getStudentId().equals(evaluation.getStudentId())) { %>
-                        <td><%= criterionNEvaluation.getCriterionNEvaluation() %></td>
-                    <% } %>
-                <% } %>
+            <% } %>
 
-            </tr>
+            <% for (FinalResult finalResult : finalResultList) { %>
+                <% if (finalResult.getStudentId().equals(evaluation.getStudentId())) { %>
+                	<td><%= finalResult.getFinalResult() %></td>
+                <% } %>
+            <% } %>
+
+            <td><%= evaluation.getEvaluation() %></td>
+
+            <% for (CriterionNScore criterionNScore : criterionNScoreList) { %>
+                <% if (criterionNScore.getStudentId().equals(evaluation.getStudentId())) { %>
+                    <td><%= criterionNScore.getCriterionNScore() %></td>
+                <% } %>
+            <% } %>
+            <% for (CriterionNEvaluation criterionNEvaluation : criterionNEvaluationList) { %>
+                <% if (criterionNEvaluation.getStudentId().equals(evaluation.getStudentId())) { %>
+                    <td><%= criterionNEvaluation.getCriterionNEvaluation() %></td>
+                <% } %>
+            <% } %>
+        </tr>
         <% } %>
+
         <tr>
             <td>平均</td>
             <td><%= averageFinalResult %></td>
@@ -112,6 +120,24 @@
         </tr>
     </table>
     <br>
+
+    <h2>テスト結果一覧</h2>
+    <table border="1" style="border-collapse: collapse">
+        <tr>
+        	<th>生徒名</th>
+    		<% for (TestResultAndTest testResult : testResultList) { %>
+        		<th><%= testResult.getTestName() %>(第<%= testResult.getTestRound() %>回)</th>
+    		<% } %>
+    	</tr>
+        <% for (Student student : studentList) { %>
+        <tr>
+            <td><%= student.getStudentName() %></td>
+            <% for (TestResultAndTest testResult : testResultList) { %>
+            	<td><%= testResult.getScore() %></td>
+            <% } %>
+        </tr>
+    	<% } %>
+	</table>
     <a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>
