@@ -73,7 +73,7 @@ System.out.println("テストをカウントしようとはしている");
     	return nextTestRound;
     }
 
-//★【情報取得】科目IDに対応するテスト結果情報
+//【情報取得】科目IDに対応するテスト結果情報（全）
     public List<TestResultAndTest> findTestResultBySubjectId(String subjectId) {
     	List<TestResultAndTest> testResultList = new ArrayList<>();
 
@@ -109,7 +109,43 @@ System.out.println("テストをカウントしようとはしている");
         return testResultList;
     }
 
-//★【データ数 受講生×3】（観点ｎ評点）生徒の観点ｎ評点を算出
+  //【情報取得】科目IDに対応するテスト結果情報（１観点のみ）
+    public List<TestResultAndTest> findTestResultBySubjectIdAndCriterionId(String subjectId, int criterionId) {
+    	List<TestResultAndTest> testResultListOfCriterionN = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "SELECT * "
+              		   + "FROM test_result "
+               		   + "INNER JOIN test ON test_result.test_id = test.test_id "
+               		   + "WHERE test.subject_id = ? AND test.criterion_id = ? ";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+
+            pStmt.setString(1, subjectId);
+            pStmt.setInt(2, criterionId);
+            ResultSet rs = pStmt.executeQuery();
+
+            while(rs.next()) {
+            	int testResultId = rs.getInt("test_result_id");
+            	int testId = rs.getInt("test.test_id");
+            	String studentId = rs.getString("student_id");
+            	int score = rs.getInt("score");
+            	int testRound = rs.getInt("test_round");
+                String testName = rs.getString("test_name");
+                int fullScore = rs.getInt("full_score");
+                double multiplier = rs.getDouble("multiplier");
+
+                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier);
+
+                testResultListOfCriterionN.add(testResultAndTest);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return testResultListOfCriterionN;
+    }
+
+//【データ数 受講生×3】（観点ｎ評点）生徒の観点ｎ評点を算出
     public List<CriterionNScore> calculateCriterionNScore(String subjectId) {
     	List<CriterionNScore> criterionNScoreList = new ArrayList<>();
     	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
@@ -147,8 +183,7 @@ System.out.println("テストをカウントしようとはしている");
         return criterionNScoreList;
     }
 
-
-//★【データ数 3】（各観点の受講生平均）
+//【データ数 3】（各観点の受講生平均）
     public List<AverageCriterionNScore> calculateAverageCriterionNScore(String subjectId) {
     	List<AverageCriterionNScore> averageCriterionNScoreList = new ArrayList<>();
 
@@ -187,7 +222,7 @@ System.out.println("テストをカウントしようとはしている");
         return averageCriterionNScoreList;
     }
 
-//★【データ数 受講生徒数】（ある生徒の評価。観点別評価の平均）
+//【データ数 受講生徒数】（ある生徒の評価。観点別評価の平均）
     public List<Evaluation> calculateEvaluation(String subjectId) throws SQLException {
     	List<Evaluation> evaluationList = new ArrayList<>();
 
@@ -226,7 +261,7 @@ System.out.println("テストをカウントしようとはしている");
         return evaluationList;
     }
 
-//★【データ数 1】（受講生徒の評価平均）
+//【データ数 1】（受講生徒の評価平均）
     public int calculateAverageEvaluation(String subjectId) throws SQLException {
     	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
     		String sql =
@@ -263,7 +298,7 @@ System.out.println("テストをカウントしようとはしている");
     	}
     }
 
-//★【データ数 受講生×３】（観点n評価）観点ｎ評点を観点ｎ評価に読み替え
+//【データ数 受講生×３】（観点n評価）観点ｎ評点を観点ｎ評価に読み替え
     public List<CriterionNEvaluation> translateToEvaluation(String subjectId) throws SQLException {
     	List<CriterionNEvaluation> criterionNEvaluationList = new ArrayList<>();
     	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
@@ -304,8 +339,7 @@ System.out.println("テストをカウントしようとはしている");
         return criterionNEvaluationList;
     }
 
-
-//★【データ数 受講生徒数】（評定）評価を評定に読み替え
+//【データ数 受講生徒数】（評定）評価を評定に読み替え
     public List<FinalResult> translateToFinalResult(String subjectId) throws SQLException {
     	List<FinalResult> finalResultList = new ArrayList<>();
 
