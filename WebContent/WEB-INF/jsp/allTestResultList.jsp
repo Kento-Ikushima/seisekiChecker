@@ -15,6 +15,9 @@
 <%@ page import="model.FinalResult" %>
 <%@ page import="model.TestResultAndTest" %>
 <%
+    Subject subject = (Subject)request.getAttribute("subject");
+%>
+<%
     List<Evaluation> evaluationList = (List<Evaluation>)request.getAttribute("evaluationList");
 %>
 <%
@@ -26,9 +29,7 @@
 <%
     List<Student> studentList = (List<Student>)request.getAttribute("studentList");
 %>
-<%
-    List<Subject> subjectList = (List<Subject>)request.getAttribute("subjectList");
-%>
+
 <%
     List<Criterion> criterionList = (List<Criterion>)request.getAttribute("criterionList");
 %>
@@ -122,6 +123,9 @@
     <br>
 
     <h2>テスト結果一覧</h2>
+	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=1">観点１の結果一覧</a>
+	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=2">観点２の結果一覧</a>
+	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=3">観点３の結果一覧</a>
     <table border="1" style="border-collapse: collapse">
         <tr>
         	<th>生徒名</th>

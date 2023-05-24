@@ -114,6 +114,5 @@ public class AddTestResultServlet extends HttpServlet {
 	    }
 
 	}
-
-
 }
+
