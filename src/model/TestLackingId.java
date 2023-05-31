@@ -7,13 +7,15 @@ public class TestLackingId {
 	private int criterionId;
 	private int fullScore;
 	private double multiplier;
+	private int deleted;
 
-	public TestLackingId(String testName, String subjectId, int criterionId, int fullScore, double multiplier) {
+	public TestLackingId(String testName, String subjectId, int criterionId, int fullScore, double multiplier, int deleted) {
 		this.testName = testName;
 		this.subjectId = subjectId;
 		this.criterionId = criterionId;
 		this.fullScore = fullScore;
 		this.multiplier = multiplier;
+		this.deleted = deleted;
 	}
 
 
@@ -23,6 +25,7 @@ public class TestLackingId {
 	public int getCriterionId() {return criterionId;}
 	public int getFullScore() {return fullScore;}
 	public double getMultiplier() {return multiplier;}
+	public int getDeleted() {return deleted;}
 
     public void setTestId(int testId) {
         this.testId = testId;
@@ -41,5 +44,8 @@ public class TestLackingId {
     }
     public void setMultiplier(double multiplier) {
         this.multiplier = multiplier;
+    }
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 }

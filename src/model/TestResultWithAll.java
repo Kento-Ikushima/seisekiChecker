@@ -1,6 +1,6 @@
 package model;
 
-public class TestResultAndTest {
+public class TestResultWithAll {
 	private int testResultId;
 	private int testId;
 	private String studentId;
@@ -14,8 +14,13 @@ public class TestResultAndTest {
 	private double multiplier;
 	private int deleted;
 
-	public TestResultAndTest(int testResultId, int testId, String studentId, int score, int testRound
-			, String testName, String subjectId, int criterionId, int fullScore, double multiplier, int deleted) {
+	private String studentPassWord;
+	private String studentMail;
+	private String studentName;
+
+	public TestResultWithAll(int testResultId, int testId, String studentId, int score, int testRound
+			, String testName, String subjectId, int criterionId, int fullScore, double multiplier, int deleted
+			, String studentPassWord, String studentMail, String studentName) {
 		this.testResultId = testResultId;
 		this.testId = testId;
 		this.studentId = studentId;
@@ -27,6 +32,9 @@ public class TestResultAndTest {
 		this.fullScore = fullScore;
 		this.multiplier = multiplier;
 		this.deleted = deleted;
+		this.studentPassWord = studentPassWord;
+		this.studentMail = studentMail;
+		this.studentName = studentName;
 	}
 
 
@@ -41,6 +49,9 @@ public class TestResultAndTest {
 	public int getFullScore() {return fullScore;}
 	public double getMultiplier() {return multiplier;}
 	public int getDeleted() {return deleted;}
+	public String getStudentPassWord() {return studentPassWord;}
+	public String getStudentMail() {return studentMail;}
+	public String getStudentName() {return studentName;}
 
     public void setTestResultId(int testResultId) {
     	this.testResultId = testResultId;
@@ -74,6 +85,15 @@ public class TestResultAndTest {
     }
     public void setDeleted(int deleted) {
         this.deleted = deleted;
+    }
+    public void setStudentPassWord(String studentPassWord) {
+    	this.studentPassWord = studentPassWord;
+    }
+    public void setStudentMail(String studentMail) {
+    	this.studentMail = studentMail;
+    }
+    public void setStudentName(String studentName) {
+    	this.studentName = studentName;
     }
 }
 

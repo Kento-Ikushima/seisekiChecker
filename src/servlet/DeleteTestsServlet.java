@@ -51,14 +51,6 @@ public class DeleteTestsServlet extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            response.sendRedirect("error.jsp");
-            return;
-        }
-
         //リクエストパラメータ受け取る。セットもしとく
       	String subjectId = request.getParameter("subjectId");
       	request.setAttribute("subjectId", subjectId);
@@ -86,7 +78,7 @@ public class DeleteTestsServlet extends HttpServlet {
         	deleteTests[i] = Integer.parseInt(deleteTestsString[i]);
         }
 
-        // DAOを使い削除対象のテストを削除
+        // DAOを使い削除対象のテストを論理削除
         TestDAO testDAO = new TestDAO();
         boolean isSuccess = testDAO.deleteTests(deleteTests);
 
