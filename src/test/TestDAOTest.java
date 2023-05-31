@@ -16,7 +16,7 @@ public class TestDAOTest {
 
 //test作成テスト
 	public static void testAddTest() {
-		TestLackingId testLackingId = new TestLackingId("小テスト", "55444", 1, 10, 3);
+		TestLackingId testLackingId = new TestLackingId("小テスト", "55444", 1, 10, 3, 0);
 		TestDAO dao = new TestDAO();
 		int result = dao.addTest(testLackingId);
 

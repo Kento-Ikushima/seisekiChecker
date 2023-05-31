@@ -25,6 +25,7 @@ import model.FinalResult;
 import model.Student;
 import model.Subject;
 import model.Test;
+import model.TestIdAndRound;
 import model.TestResultAndTest;
 
 //全観点の情報ありの成績一覧
@@ -65,8 +66,12 @@ public class ListOfTestResultsServlet extends HttpServlet {
         request.setAttribute("criterionList", criterionList);
 
 		if(criterionIdString == null) {//全観点ページ用
-			//テストIDと紐づく科目IDで、限定したテスト結果情報の取得
+			//１行目用の、テスト結果タイトルリストを取得（  他の観点のみのページはまだ   )
 			TestResultDAO testResultDAO = new TestResultDAO();
+			List<TestIdAndRound> testIdAndRoundList = testResultDAO.findTestIdAndRoundBySubjectId(subjectId);
+			request.setAttribute("testIdAndRoundList", testIdAndRoundList);
+
+			//テストIDと紐づく科目IDで、限定したテスト結果情報の取得
 			List<TestResultAndTest> testResultList = testResultDAO.findTestResultBySubjectId(subjectId);
 			request.setAttribute("testResultList", testResultList);
 
@@ -129,7 +134,7 @@ public class ListOfTestResultsServlet extends HttpServlet {
 			int criterionId = Integer.parseInt(criterionIdString);
 			List<TestResultAndTest> testResultListOfCriterionN = testResultDAO.findTestResultBySubjectIdAndCriterionId(subjectId, criterionId);
 			request.setAttribute("testResultListOfCriterionN", testResultListOfCriterionN);
-System.out.println(criterionId);
+
 			RequestDispatcher dispatcher;
 			if (criterionId == 1) {
 				System.out.println(criterionId);

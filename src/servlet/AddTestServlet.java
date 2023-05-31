@@ -56,6 +56,7 @@ public class AddTestServlet extends HttpServlet {
 		String criterionIdString = request.getParameter("criterionId");
 		String fullScoreString = request.getParameter("fullScore");
 		String multiplierString = request.getParameter("multiplier");
+		String deletedString = request.getParameter("deleted");
 
 		TestDAO testDao = new TestDAO();
 
@@ -63,8 +64,9 @@ public class AddTestServlet extends HttpServlet {
 			int criterionId = Integer.parseInt(criterionIdString);
 			int fullScore = Integer.parseInt(fullScoreString);
 			double multiplier = Double.parseDouble(multiplierString);
+			int deleted = Integer.parseInt(deletedString);
 
-			TestLackingId testLackingId = new TestLackingId(testName, subjectId, criterionId, fullScore, multiplier);
+			TestLackingId testLackingId = new TestLackingId(testName, subjectId, criterionId, fullScore, multiplier, deleted);
 			testDao.addTest(testLackingId);
 
 			//ここからもう一つのサーブレットに飛ぶ

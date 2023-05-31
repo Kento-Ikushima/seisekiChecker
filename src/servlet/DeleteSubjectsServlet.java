@@ -35,7 +35,7 @@ public class DeleteSubjectsServlet extends HttpServlet {
     		response.sendRedirect("/seisekiChecker/TeacherLoginServlet");
     	}
 
-// 科目一覧を取得する
+    	// 科目一覧を取得する
 
     	SubjectsInChargeDAO subjectsInChargeDAO = new SubjectsInChargeDAO();
         List<Subject> subjectList = subjectsInChargeDAO.findSubjectsByTeacherId(teacherId);

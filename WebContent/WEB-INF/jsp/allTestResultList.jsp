@@ -14,6 +14,7 @@
 <%@ page import="model.CriterionNEvaluation" %>
 <%@ page import="model.FinalResult" %>
 <%@ page import="model.TestResultAndTest" %>
+<%@ page import="model.TestIdAndRound" %>
 <%
     Subject subject = (Subject)request.getAttribute("subject");
 %>
@@ -51,97 +52,129 @@
 <%
     int averageFinalResult = (int)request.getAttribute("averageFinalResult");
 %>
+<%
+    List<TestIdAndRound> testIdAndRoundList = (List<TestIdAndRound>)request.getAttribute("testIdAndRoundList");
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>All Test Results</title>
-    <style>
-        body {
-            background-color: #edefea;
-            color: #323232;
-        }
-    </style>
+<style>
+    body {
+        background-color: #edefea;
+        color: #323232;
+    }
+</style>
 </head>
 <body>
-    <h1>成績、テスト結果一覧</h1>
-	<h2>成績情報</h2>
-    <table border="1" style="border-collapse: collapse">
-        <tr>
-            <th>生徒名</th>
-            <th>評定</th>
-			<th>評価</th>
-            <th>観点１評点</th>
-            <th>観点２評点</th>
-            <th>観点３評点</th>
-            <th>観点１評価</th>
-            <th>観点２評価</th>
-            <th>観点３評価</th>
-        </tr>
-        <% for (Evaluation evaluation : evaluationList) { %>
-        <tr>
-            <% for (Student student : studentList) { %>
-                <% if (student.getStudentId().equals(evaluation.getStudentId())) { %>
-                	<td><%= student.getStudentName() %></td>
-                <% } %>
+<h1>成績、テスト結果一覧</h1>
+<h2>成績情報</h2>
+<table border="1" style="border-collapse: collapse">
+    <tr>
+        <th>生徒名</th>
+        <th>評定</th>
+        <th>評価</th>
+        <th>観点１評点</th>
+        <th>観点２評点</th>
+        <th>観点３評点</th>
+        <th>観点１評価</th>
+        <th>観点２評価</th>
+        <th>観点３評価</th>
+    </tr>
+    <% for (Evaluation evaluation : evaluationList) { %>
+    <tr>
+        <% for (Student student : studentList) { %>
+            <% if (student.getStudentId().equals(evaluation.getStudentId())) { %>
+                <td><%= student.getStudentName() %></td>
             <% } %>
-
-            <% for (FinalResult finalResult : finalResultList) { %>
-                <% if (finalResult.getStudentId().equals(evaluation.getStudentId())) { %>
-                	<td><%= finalResult.getFinalResult() %></td>
-                <% } %>
-            <% } %>
-
-            <td><%= evaluation.getEvaluation() %></td>
-
-            <% for (CriterionNScore criterionNScore : criterionNScoreList) { %>
-                <% if (criterionNScore.getStudentId().equals(evaluation.getStudentId())) { %>
-                    <td><%= criterionNScore.getCriterionNScore() %></td>
-                <% } %>
-            <% } %>
-            <% for (CriterionNEvaluation criterionNEvaluation : criterionNEvaluationList) { %>
-                <% if (criterionNEvaluation.getStudentId().equals(evaluation.getStudentId())) { %>
-                    <td><%= criterionNEvaluation.getCriterionNEvaluation() %></td>
-                <% } %>
-            <% } %>
-        </tr>
         <% } %>
 
-        <tr>
-            <td>平均</td>
-            <td><%= averageFinalResult %></td>
-            <td><%= averageEvaluation %></td>
-            <% for (AverageCriterionNScore averageCriterionNScore : averageCriterionNScoreList) { %>
-                <td><%= averageCriterionNScore.getAverageCriterionNScore() %></td>
+        <% for (FinalResult finalResult : finalResultList) { %>
+            <% if (finalResult.getStudentId().equals(evaluation.getStudentId())) { %>
+                <td><%= finalResult.getFinalResult() %></td>
             <% } %>
-			<td></td>
-			<td></td>
-			<td></td>
-        </tr>
-    </table>
-    <br>
+        <% } %>
 
-    <h2>テスト結果一覧</h2>
-	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=1">観点１の結果一覧</a>
-	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=2">観点２の結果一覧</a>
-	<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=3">観点３の結果一覧</a>
-    <table border="1" style="border-collapse: collapse">
-        <tr>
-        	<th>生徒名</th>
-    		<% for (TestResultAndTest testResult : testResultList) { %>
-        		<th><%= testResult.getTestName() %>(第<%= testResult.getTestRound() %>回)</th>
-    		<% } %>
-    	</tr>
-        <% for (Student student : studentList) { %>
+        <td><%= evaluation.getEvaluation() %></td>
+
+        <% for (CriterionNScore criterionNScore : criterionNScoreList) { %>
+            <% if (criterionNScore.getStudentId().equals(evaluation.getStudentId())) { %>
+                <td><%= criterionNScore.getCriterionNScore() %></td>
+            <% } %>
+        <% } %>
+        <% for (CriterionNEvaluation criterionNEvaluation : criterionNEvaluationList) { %>
+            <% if (criterionNEvaluation.getStudentId().equals(evaluation.getStudentId())) { %>
+                <td><%= criterionNEvaluation.getCriterionNEvaluation() %></td>
+            <% } %>
+        <% } %>
+    </tr>
+    <% } %>
+
+    <tr>
+        <td>平均</td>
+        <td><%= averageFinalResult %></td>
+        <td><%= averageEvaluation %></td>
+        <% for (AverageCriterionNScore averageCriterionNScore : averageCriterionNScoreList) { %>
+            <td><%= averageCriterionNScore.getAverageCriterionNScore() %></td>
+        <% } %>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+<br>
+
+<h2>テスト結果一覧</h2>
+<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=1">観点１の結果一覧</a>
+<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=2">観点２の結果一覧</a>
+<a href="/seisekiChecker/ListOfTestResultsServlet?subjectId=<%= subject.getSubjectId() %>&criterionId=3">観点３の結果一覧</a>
+<br>
+<table border="1" style="border-collapse: collapse">
+    <tr>
+        <th>生徒名</th>
+        <% for (TestIdAndRound testIdAndRound : testIdAndRoundList) { %>
+        	<% Test test = null;
+               for (Test t : testList) {
+                   if (t.getTestId() == testIdAndRound.getTestId()) {
+                       test = t;
+                       break;
+                   }
+               }
+            %>
+            <th><%= test != null ? test.getTestName() + "(第" + testIdAndRound.getTestRound() + "回)" : "" %></th>
+
+        <% } %>
+    </tr>
+    <% for (Student student : studentList) { %>
         <tr>
             <td><%= student.getStudentName() %></td>
-            <% for (TestResultAndTest testResult : testResultList) { %>
-            	<td><%= testResult.getScore() %></td>
+            <% for (TestIdAndRound testIdAndRound : testIdAndRoundList) { %>
+                <% boolean found = false;
+                   int score = 0;
+                   for (TestResultAndTest testResult : testResultList) {
+                       if (testResult.getStudentId() == student.getStudentId() &&
+                           testResult.getTestId() == testIdAndRound.getTestId() &&
+                           testResult.getTestRound() == testIdAndRound.getTestRound()) {
+                           found = true;
+                           score = testResult.getScore();
+                           break;
+                       }
+                   }
+                   if (found) {
+                %>
+                       <td><%= score %></td>
+                <% } else { %>
+                       <td></td>
+                <% } %>
             <% } %>
         </tr>
-    	<% } %>
-	</table>
-    <a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
+    <% } %>
+</table>
+
+
+<br>
+<a href="/seisekiChecker/TeacherHomeServlet">ホームへ</a>
 </body>
 </html>

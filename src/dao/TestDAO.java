@@ -50,7 +50,7 @@ public class TestDAO {
             String sql = "SELECT t.test_id, t.test_name, t.subject_id, t.criterion_id, t.full_score, t.multiplier " +
                     "FROM test t " +
                     "LEFT JOIN subjects_in_charge sic ON t.subject_id = sic.subject_id " +
-                    "WHERE sic.teacher_id = ?";
+                    "WHERE sic.teacher_id = ? and t.deleted = 0";
             PreparedStatement pStmt = conn.prepareStatement(sql);
             pStmt.setString(1, teacherId);
 
@@ -63,8 +63,9 @@ public class TestDAO {
                 int criterionId = rs.getInt("criterion_id");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
 
-                Test test = new Test(testId, testName, subjectId, criterionId, fullScore, multiplier);
+                Test test = new Test(testId, testName, subjectId, criterionId, fullScore, multiplier, deleted);
 
                 testList.add(test);
             }
@@ -80,7 +81,7 @@ public class TestDAO {
         List<Test> testList = new ArrayList<>();
 
         try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "SELECT * FROM test WHERE subject_id = ?";
+            String sql = "SELECT * FROM test WHERE subject_id = ? and deleted = 0";
             PreparedStatement pStmt = conn.prepareStatement(sql);
             pStmt.setString(1, subjectId);
 
@@ -92,8 +93,9 @@ public class TestDAO {
                 int criterionId = rs.getInt("criterion_id");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
 
-                Test test = new Test(testId, testName, subjectId, criterionId, fullScore, multiplier);
+                Test test = new Test(testId, testName, subjectId, criterionId, fullScore, multiplier, deleted);
                 testList.add(test);
             }
         } catch (SQLException e) {
@@ -103,11 +105,11 @@ public class TestDAO {
         return testList;
     }
 
-  //選択したtestIDに対応するレコードを一括で削除
+  //選択したtestIDに対応するレコードを一括で論理削除
     public boolean deleteTests(int[] deleteTests) {
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 
-            String sql = "DELETE FROM test WHERE test_id = ?";
+            String sql = "UPDATE test SET deleted = 1 WHERE test_id = ?";
             PreparedStatement pStmt = conn.prepareStatement(sql);
             for (int testId : deleteTests) {
                 pStmt.setInt(1, testId);
@@ -120,10 +122,10 @@ public class TestDAO {
         }
     }
 
- // （１件取得）teacherIDに対するテスト情報
+ // （１件取得）testIDに対するテスト情報
     public Test findTestById(int testId) {
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-            String sql = "SELECT * FROM TEST WHERE TEST_ID = ?";
+            String sql = "SELECT * FROM TEST WHERE TEST_ID = ? deleted = 0";
             PreparedStatement pStmt = conn.prepareStatement(sql);
             pStmt.setInt(1, testId);
 
@@ -135,9 +137,10 @@ public class TestDAO {
                 int criterionId = rs.getInt("criterion_id");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
 
 
-                return new Test(testId, testName, subjectId, criterionId, fullScore, multiplier);
+                return new Test(testId, testName, subjectId, criterionId, fullScore, multiplier, deleted);
             }
         } catch (SQLException e) {
             e.printStackTrace();

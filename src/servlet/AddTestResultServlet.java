@@ -105,10 +105,10 @@ public class AddTestResultServlet extends HttpServlet {
 	            	}
 	        	}
 	        }else {
-	        	response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
+	        	response.sendRedirect("/seisekiChecker/ListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
 	        }
 	       //成績表示サーブレットにリダイレクト
-			response.sendRedirect("/seisekiChecker/AllListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
+			response.sendRedirect("/seisekiChecker/ListOfTestResultsServlet?subjectId=" + URLEncoder.encode(subjectId, "UTF-8"));
 	    } else {
 	        response.sendRedirect("/WEB-INF/jsp/addTestResult.jsp");
 	    }

@@ -13,8 +13,10 @@ import model.CriterionNEvaluation;
 import model.CriterionNScore;
 import model.Evaluation;
 import model.FinalResult;
+import model.TestIdAndRound;
 import model.TestResult;
 import model.TestResultAndTest;
+import model.TestResultWithAll;
 
 public class TestResultDAO {
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/~/seisekiChecker";
@@ -45,10 +47,25 @@ public class TestResultDAO {
         return result;
     }
 
+//【削除（生徒人数分）】テスト結果の物理削除
+    public boolean deleteTestResult(int testId, int testRound) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "DELETE FROM test_result WHERE test_id = ? AND test_round = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, testId);
+            stmt.setInt(1, testRound);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 //テストIDが何回目の使用かをカウント
     public int determineTestRoundForNewResults(int testId) {
     	int dbMaxTestRound = 0;
-System.out.println("テストをカウントしようとはしている");
     	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
     		String sql = "SELECT MAX(test_round) FROM test_result WHERE test_id = ?";
             PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -63,7 +80,6 @@ System.out.println("テストをカウントしようとはしている");
             return dbMaxTestRound = 0;
         }
 
-    	System.out.println("テストをカウント終わろうとはしている");
     	int nextTestRound;
     	if (dbMaxTestRound == 0) {
             nextTestRound = 1;
@@ -72,6 +88,80 @@ System.out.println("テストをカウントしようとはしている");
         }
     	return nextTestRound;
     }
+
+//【取得（生徒人数分）】testIdとtestRoundに紐づく情報---テスト結果の編集、削除画面用---
+    public List<TestResultWithAll> findTestResultByTestIdAndTestRound(int testId, int testRound) {
+    	List<TestResultWithAll> testResultWithAllList = new ArrayList<>();
+    	try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+    		String sql
+    				= "SELECT * "
+    				+ "FROM test_result "
+            		+ "INNER JOIN test ON test_result.test_id = test.test_id "
+    				+ "INNER JOIN student ON test_result.student_id = student.student_id "
+            		+ "WHERE test_result.test_id = ? AND test_result.test_round = ?";
+    		PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, testId);
+            pStmt.setInt(2, testRound);
+            ResultSet rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+            	int testResultId = rs.getInt("test_result_id");
+            	String studentId = rs.getString("student_id");
+            	int score = rs.getInt("score");
+
+                String testName = rs.getString("test_name");
+                String subjectId = rs.getString("subject_id");
+                int criterionId = rs.getInt("criterion_id");
+                int fullScore = rs.getInt("full_score");
+                double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
+
+                String studentPassWord = rs.getString("student_pass_word");
+                String studentMail = rs.getString("student_mail");
+                String studentName = rs.getString("student_name");
+
+                TestResultWithAll testResultWithAll = new TestResultWithAll(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier, deleted, studentPassWord, studentMail, studentName);
+                testResultWithAllList.add(testResultWithAll);
+            }
+    	}catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    	return testResultWithAllList;
+    }
+
+  //【取得（テストの種類分）】科目IDに対応する、テスト結果の種類---テスト結果一覧の１行目用---（全観点）
+    public List<TestIdAndRound> findTestIdAndRoundBySubjectId(String subjectId) {
+    	List<TestIdAndRound> testIdAndRoundList = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+            String sql = "SELECT test.test_id, test_round "
+              		   + "FROM test_result "
+               		   + "INNER JOIN test ON test_result.test_id = test.test_id "
+               		   + "WHERE test.subject_id = ? "
+               		   + "GROUP BY test.test_id, test_round";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+
+            pStmt.setString(1, subjectId);
+            ResultSet rs = pStmt.executeQuery();
+
+            while(rs.next()) {
+            	int testId = rs.getInt("test.test_id");
+            	int testRound = rs.getInt("test_round");
+
+            	TestIdAndRound testIdAndRound = new TestIdAndRound(testId, testRound);
+
+            	testIdAndRoundList.add(testIdAndRound);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return testIdAndRoundList;
+    }
+
+  //【取得（テストの種類分）】科目IDに対応する、テスト結果の種類---テスト結果一覧の１行目用---（１観点のみ）
+    //上をコピペして、２こ下を参考に書けばいっちょあがり
 
 //【情報取得】科目IDに対応するテスト結果情報（全）
     public List<TestResultAndTest> findTestResultBySubjectId(String subjectId) {
@@ -97,8 +187,9 @@ System.out.println("テストをカウントしようとはしている");
                 int criterionId = rs.getInt("criterion_id");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
 
-                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier);
+                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier, deleted);
 
                 testResultList.add(testResultAndTest);
             }
@@ -108,6 +199,7 @@ System.out.println("テストをカウントしようとはしている");
         }
         return testResultList;
     }
+
 
   //【情報取得】科目IDに対応するテスト結果情報（１観点のみ）
     public List<TestResultAndTest> findTestResultBySubjectIdAndCriterionId(String subjectId, int criterionId) {
@@ -133,8 +225,9 @@ System.out.println("テストをカウントしようとはしている");
                 String testName = rs.getString("test_name");
                 int fullScore = rs.getInt("full_score");
                 double multiplier = rs.getDouble("multiplier");
+                int deleted = rs.getInt("deleted");
 
-                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier);
+                TestResultAndTest testResultAndTest = new TestResultAndTest(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier, deleted);
 
                 testResultListOfCriterionN.add(testResultAndTest);
             }
