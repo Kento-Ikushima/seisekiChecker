@@ -143,7 +143,9 @@
                    }
                }
             %>
-            <th><%= test != null ? test.getTestName() + "(第" + testIdAndRound.getTestRound() + "回)" : "" %></th>
+            <th><a href="/seisekiChecker/DeleteTestResultServlet?testId=<%= testIdAndRound.getTestId() %>&testRound=<%= testIdAndRound.getTestRound() %>">
+            	<%= test != null ? test.getTestName() + "(第" + testIdAndRound.getTestRound() + "回)" : "" %></a>
+            </th>
 
         <% } %>
     </tr>
