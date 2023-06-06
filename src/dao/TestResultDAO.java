@@ -54,7 +54,7 @@ public class TestResultDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, testId);
-            stmt.setInt(1, testRound);
+            stmt.setInt(2, testRound);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -103,7 +103,6 @@ public class TestResultDAO {
             pStmt.setInt(1, testId);
             pStmt.setInt(2, testRound);
             ResultSet rs = pStmt.executeQuery();
-
             while (rs.next()) {
             	int testResultId = rs.getInt("test_result_id");
             	String studentId = rs.getString("student_id");
@@ -116,11 +115,11 @@ public class TestResultDAO {
                 double multiplier = rs.getDouble("multiplier");
                 int deleted = rs.getInt("deleted");
 
-                String studentPassWord = rs.getString("student_pass_word");
+                String studentPassword = rs.getString("student_password");
                 String studentMail = rs.getString("student_mail");
                 String studentName = rs.getString("student_name");
 
-                TestResultWithAll testResultWithAll = new TestResultWithAll(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier, deleted, studentPassWord, studentMail, studentName);
+                TestResultWithAll testResultWithAll = new TestResultWithAll(testResultId, testId, studentId, score, testRound, testName, subjectId, criterionId, fullScore, multiplier, deleted, studentPassword, studentMail, studentName);
                 testResultWithAllList.add(testResultWithAll);
             }
     	}catch (SQLException e) {
