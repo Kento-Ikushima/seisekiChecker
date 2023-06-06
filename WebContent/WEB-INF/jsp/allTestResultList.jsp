@@ -55,7 +55,11 @@
 <%
     List<TestIdAndRound> testIdAndRoundList = (List<TestIdAndRound>)request.getAttribute("testIdAndRoundList");
 %>
+<%@ page import="model.TestResultWithAll" %>
 
+<%
+    List<TestResultWithAll> testResultWithAllList = (List<TestResultWithAll>)request.getAttribute("testResultWithAllList");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,6 +73,16 @@
 </style>
 </head>
 <body>
+<%
+    List<TestResultWithAll> deletedTestResultList = (List<TestResultWithAll>) session.getAttribute("deletedTestResultList");
+    session.removeAttribute("deletedTestResultList");
+%>
+
+<% if (deletedTestResultList != null && !deletedTestResultList.isEmpty()) { %>
+    <p>testIdが<%= deletedTestResultList.get(0).getTestId() %>でtestRoundが<%= deletedTestResultList.get(0).getTestRound() %>の結果を削除しました</p>
+<% } %>
+
+
 <h1>成績、テスト結果一覧</h1>
 <h2>成績情報</h2>
 <table border="1" style="border-collapse: collapse">

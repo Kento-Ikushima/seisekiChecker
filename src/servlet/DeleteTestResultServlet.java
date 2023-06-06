@@ -56,7 +56,7 @@ public class DeleteTestResultServlet extends HttpServlet {
 		if (isSuccess) {
 			HttpSession session = request.getSession();
 			session.setAttribute("deletedTestResultList", deletedTestResultList);
-			response.sendRedirect(request.getContextPath() + "ListOfTestResultsServlet?subjectId=" + deletedTestResultList.get(1).getSubjectId());
+			response.sendRedirect(request.getContextPath() + "/ListOfTestResultsServlet?subjectId=" + deletedTestResultList.get(0).getSubjectId());
 		}else {
 		    response.sendRedirect("/WEB-INF/jsp/error.jsp");
 		}

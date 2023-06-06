@@ -14,13 +14,13 @@ public class TestResultWithAll {
 	private double multiplier;
 	private int deleted;
 
-	private String studentPassWord;
+	private String studentPassword;
 	private String studentMail;
 	private String studentName;
 
 	public TestResultWithAll(int testResultId, int testId, String studentId, int score, int testRound
 			, String testName, String subjectId, int criterionId, int fullScore, double multiplier, int deleted
-			, String studentPassWord, String studentMail, String studentName) {
+			, String studentPassword, String studentMail, String studentName) {
 		this.testResultId = testResultId;
 		this.testId = testId;
 		this.studentId = studentId;
@@ -32,7 +32,7 @@ public class TestResultWithAll {
 		this.fullScore = fullScore;
 		this.multiplier = multiplier;
 		this.deleted = deleted;
-		this.studentPassWord = studentPassWord;
+		this.studentPassword = studentPassword;
 		this.studentMail = studentMail;
 		this.studentName = studentName;
 	}
@@ -49,7 +49,7 @@ public class TestResultWithAll {
 	public int getFullScore() {return fullScore;}
 	public double getMultiplier() {return multiplier;}
 	public int getDeleted() {return deleted;}
-	public String getStudentPassWord() {return studentPassWord;}
+	public String getStudentPassword() {return studentPassword;}
 	public String getStudentMail() {return studentMail;}
 	public String getStudentName() {return studentName;}
 
@@ -86,8 +86,8 @@ public class TestResultWithAll {
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
-    public void setStudentPassWord(String studentPassWord) {
-    	this.studentPassWord = studentPassWord;
+    public void setStudentPassword(String studentPassword) {
+    	this.studentPassword = studentPassword;
     }
     public void setStudentMail(String studentMail) {
     	this.studentMail = studentMail;
